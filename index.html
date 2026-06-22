@@ -2,60 +2,112 @@
 <html>
 <head>
     <title>Geometry Calculator</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f9;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 20px auto;
+            width: 300px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+        }
+
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        .result {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
 </head>
+
 <body>
 
-<h1>Geometry Calculator</h1>
+<h1>📐 Geometry Calculator</h1>
 
-<h2>Square Area</h2>
-<input id="side" type="number" placeholder="Enter side">
-<button onclick="calcSquare()">Calculate</button>
-<p id="squareResult"></p>
+<div class="card">
+    <h2>Square Area</h2>
+    <input id="side" type="number" placeholder="Enter side">
+    <br>
+    <button onclick="calcSquare()">Calculate</button>
+    <div class="result" id="resSquare"></div>
+</div>
 
-<hr>
-
-<h2>Circle Area</h2>
-<input id="radius" type="number" placeholder="Enter radius">
-<button onclick="calcCircle()">Calculate</button>
-<p id="circleResult"></p>
+<div class="card">
+    <h2>Circle Area</h2>
+    <input id="radius" type="number" placeholder="Enter radius">
+    <br>
+    <button onclick="calcCircle()">Calculate</button>
+    <div class="result" id="resCircle"></div>
+</div>
 
 <script>
 
-const baseUrl = "https://wsbsbageo-gnc8fvezcaa6hrar.swedencentral-01.azurewebsites.net/api/calculate";
+const API = "https://wsbsbageo-gnc8fvezcaa6hrar.swedencentral-01.azurewebsites.net/api/calculate";
 
 async function calcSquare() {
     const side = document.getElementById("side").value;
 
-    const url = baseUrl + "?shape=square&side=" + side;
+    if (!side) {
+        document.getElementById("resSquare").innerText = "Enter a value";
+        return;
+    }
 
     try {
-        const response = await fetch(url);
-        const data = await response.json();
+        const res = await fetch(`${API}?shape=square&side=${side}`);
+        const data = await res.json();
 
-        document.getElementById("squareResult").innerText =
+        document.getElementById("resSquare").innerText =
             "Area = " + data.area;
-    } catch (e) {
-        document.getElementById("squareResult").innerText =
-            "Error: API not working";
-        console.log(e);
+    } catch {
+        document.getElementById("resSquare").innerText = "Error";
     }
 }
 
 async function calcCircle() {
     const radius = document.getElementById("radius").value;
 
-    const url = baseUrl + "?shape=circle&radius=" + radius;
+    if (!radius) {
+        document.getElementById("resCircle").innerText = "Enter a value";
+        return;
+    }
 
     try {
-        const response = await fetch(url);
-        const data = await response.json();
+        const res = await fetch(`${API}?shape=circle&radius=${radius}`);
+        const data = await res.json();
 
-        document.getElementById("circleResult").innerText =
+        document.getElementById("resCircle").innerText =
             "Area = " + data.area;
-    } catch (e) {
-        document.getElementById("circleResult").innerText =
-            "Error: API not working";
-        console.log(e);
+    } catch {
+        document.getElementById("resCircle").innerText = "Error";
     }
 }
 
