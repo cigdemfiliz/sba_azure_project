@@ -7,7 +7,53 @@
 
 <h1>Geometry Calculator</h1>
 
-<p>Version 1 - Frontend Only</p>
+<h3>Square Area</h3>
+<input id="side" type="number" placeholder="Enter side">
+<button onclick="calcSquare()">Calculate</button>
+
+<p id="squareResult"></p>
+
+<hr>
+
+<h3>Circle Area</h3>
+<input id="radius" type="number" placeholder="Enter radius">
+<button onclick="calcCircle()">Calculate</button>
+
+<p id="circleResult"></p>
+
+<script>
+
+const baseUrl = "https://wsbsbageo-gnc8fvezcaa6hrar.swedencentral-01.azurewebsites.net/api/calculate";
+
+async function calcSquare() {
+
+    let side = document.getElementById("side").value;
+
+    let response = await fetch(
+        `${baseUrl}?shape=square&side=${side}`
+    );
+
+    let data = await response.json();
+
+    document.getElementById("squareResult").innerText =
+        "Area = " + data.area;
+}
+
+async function calcCircle() {
+
+    let radius = document.getElementById("radius").value;
+
+    let response = await fetch(
+        `${baseUrl}?shape=circle&radius=${radius}`
+    );
+
+    let data = await response.json();
+
+    document.getElementById("circleResult").innerText =
+        "Area = " + data.area;
+}
+
+</script>
 
 </body>
 </html>
