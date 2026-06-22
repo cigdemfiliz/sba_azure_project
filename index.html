@@ -7,18 +7,16 @@
 
 <h1>Geometry Calculator</h1>
 
-<h3>Square Area</h3>
+<h2>Square Area</h2>
 <input id="side" type="number" placeholder="Enter side">
 <button onclick="calcSquare()">Calculate</button>
-
 <p id="squareResult"></p>
 
 <hr>
 
-<h3>Circle Area</h3>
+<h2>Circle Area</h2>
 <input id="radius" type="number" placeholder="Enter radius">
 <button onclick="calcCircle()">Calculate</button>
-
 <p id="circleResult"></p>
 
 <script>
@@ -26,31 +24,39 @@
 const baseUrl = "https://wsbsbageo-gnc8fvezcaa6hrar.swedencentral-01.azurewebsites.net/api/calculate";
 
 async function calcSquare() {
+    const side = document.getElementById("side").value;
 
-    let side = document.getElementById("side").value;
+    const url = baseUrl + "?shape=square&side=" + side;
 
-    let response = await fetch(
-        `${baseUrl}?shape=square&side=${side}`
-    );
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-    let data = await response.json();
-
-    document.getElementById("squareResult").innerText =
-        "Area = " + data.area;
+        document.getElementById("squareResult").innerText =
+            "Area = " + data.area;
+    } catch (e) {
+        document.getElementById("squareResult").innerText =
+            "Error: API not working";
+        console.log(e);
+    }
 }
 
 async function calcCircle() {
+    const radius = document.getElementById("radius").value;
 
-    let radius = document.getElementById("radius").value;
+    const url = baseUrl + "?shape=circle&radius=" + radius;
 
-    let response = await fetch(
-        `${baseUrl}?shape=circle&radius=${radius}`
-    );
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
 
-    let data = await response.json();
-
-    document.getElementById("circleResult").innerText =
-        "Area = " + data.area;
+        document.getElementById("circleResult").innerText =
+            "Area = " + data.area;
+    } catch (e) {
+        document.getElementById("circleResult").innerText =
+            "Error: API not working";
+        console.log(e);
+    }
 }
 
 </script>
